@@ -14,7 +14,7 @@ services:
     restart: always
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"  
     networks:
-       allnetwork:
+       network:
           ipv4_address: 172.20.0.10
 
  certbot:
@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
     entrypoint: /bin/sh -c "trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;"
     networks:
-       allnetwork:
+       network:
           ipv4_address: 172.20.0.11
     depends_on:
       - ssl
@@ -35,6 +35,6 @@ services:
 networks:
   default:
     external:
-       name: allnetwork
-  allnetwork:
+       name: network
+  network:
     external: true
